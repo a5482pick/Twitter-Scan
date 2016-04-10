@@ -36,7 +36,7 @@ chrome.runtime.onMessage.addListener(
 
 
                     //Find p elements with correct class name.
-                    if (pElementArray[i].className.match(/[\w-]*js-tweet-text tweet-text[\w-]*/g)) {
+                    if (pElementArray[i].className.match(/js-tweet-text tweet-text/g)) {
                     
                         //These elements are the new tweets, so store them.  
                         classNameArray[j] = pElementArray[i].className;
