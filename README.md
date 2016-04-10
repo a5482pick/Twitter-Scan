@@ -1,3 +1,3 @@
 **_An extension to automatically load and read tweets._**
 
-New tweets are automatically loaded. Old tweets are coloured red, new tweets are coloured green.
+New tweets are automatically loaded. Old tweets are coloured red, new tweets are coloured green.  The new tweets are saved in an array.
