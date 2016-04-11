@@ -51,7 +51,7 @@ chrome.runtime.onMessage.addListener(
                             tweetElementArray[j].style.color = "green"; 
                             
                             //Store the new tweets in an array.                           
-                            dataObject[j] = tweetElementArray[j].innerHTML + "<br/>" + "<br/>";                        
+                            dataObject[j] = tweetElementArray[j].innerText;                   
                         }
                     
                         else {
@@ -65,10 +65,16 @@ chrome.runtime.onMessage.addListener(
                     }
                 }
 
+
                 //After the 'for loop' has finished, the storage of the tweets is demonstrated.
-                chrome.storage.local.set(dataObject);
-                chrome.storage.local.get(function(dataObject) {   alert(dataObject[3]) });   
-            }      
+                chrome.storage.local.set(dataObject, function() {
+                
+                    chrome.storage.local.get(function(dataObject) {
+                    
+                        chrome.runtime.sendMessage({message: dataObject}); 
+                    });   
+                });  
+            }     
         }
     }
 );
