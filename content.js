@@ -1,10 +1,21 @@
-//Listen for message from background.js
-var numNewTweets = 0;
+var numNewTweets = 0;        
 var dataObject = {};
+var myWindow;
+
+
+//Listen for message from background.js
 chrome.runtime.onMessage.addListener(
 
     function(request, sender, sendResponse) {
+
+        //Called only when the page action button is pressed.  Initialies a blank tab to store tweets.
+        if( request.message === "initiate" ) {
+        
+            myWindow = window.open("");
+            myWindow.document.write("<i>(Any new tweets will be listed here in real time.)</i>");
+        }
     
+        //Called when page action is pressed AND when a relevant tab automatically updates.
         if( request.message === "buttonClicked" ) { 
             
             if (document.readyState === "complete") { 
@@ -23,8 +34,7 @@ chrome.runtime.onMessage.addListener(
                         elements[i].click(); 
                     } 
                 }            
-                
-                
+                           
                 //Manipulate text and colour of new tweets.
                 //Collect all 'p' elements.
                 var pElementArray = document.getElementsByTagName("p");
@@ -51,7 +61,10 @@ chrome.runtime.onMessage.addListener(
                             tweetElementArray[j].style.color = "green"; 
                             
                             //Store the new tweets in an array.                           
-                            dataObject[j] = tweetElementArray[j].innerText;                   
+                            dataObject[j] = tweetElementArray[j].innerText;   
+                            
+                            //Output the tweets to a new window.
+                            myWindow.document.write("<p>" + dataObject[j] + "</p>");                
                         }
                     
                         else {
@@ -65,13 +78,12 @@ chrome.runtime.onMessage.addListener(
                     }
                 }
 
-
                 //After the 'for loop' has finished, the storage of the tweets is demonstrated.
                 chrome.storage.local.set(dataObject, function() {
                 
                     chrome.storage.local.get(function(dataObject) {
                     
-                        chrome.runtime.sendMessage({message: dataObject}); 
+                        chrome.runtime.sendMessage({message: dataObject});  //This demonstrates returning the tweets to background.js.       
                     });   
                 });  
             }     
