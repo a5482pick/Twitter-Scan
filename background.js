@@ -22,7 +22,11 @@ function beginBackground() {
         //Listen for array of tweets returned by content.js.
         chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
         
-            var dataObject = request.message;
+            if (request.message.messageId === '1') {
+            
+                var dataObject = request.message.dataObj;
+                //alert(dataObject[1]);
+            }
         });
     
     
@@ -43,8 +47,8 @@ function beginBackground() {
             //Time will be used to count only one update per reload.      
             time = Date.now() - timeOld;
             
-            //Set the interval to 1500ms.
-            if (time > 1500) {
+            //Set the interval to 4000ms.
+            if (time > 4000) {
         
                 timeOld = Date.now();
             

@@ -1,4 +1,4 @@
-var numNewTweets = 0;        
+var numNewTweets = 0.9;        
 var dataObject = {};
 var myWindow;
 
@@ -12,7 +12,8 @@ chrome.runtime.onMessage.addListener(
         if( request.message === "initiate" ) {
         
             myWindow = window.open("");
-            myWindow.document.write("<i>(Any new tweets will be listed here in real time.)</i>");
+            myWindow.document.write("<title>New Tweets Collection</title>");
+            myWindow.document.write("<i>(Any new tweets will be listed here in real time.  The first tweet is presented for demonstration.)</i>");
         }
     
         //Called when page action is pressed AND when a relevant tab automatically updates.
@@ -33,7 +34,8 @@ chrome.runtime.onMessage.addListener(
                         //Load the new tweets.
                         elements[i].click(); 
                     } 
-                }            
+                }    
+                     
                            
                 //Manipulate text and colour of new tweets.
                 //Collect all 'p' elements.
@@ -81,10 +83,8 @@ chrome.runtime.onMessage.addListener(
                 //After the 'for loop' has finished, the storage of the tweets is demonstrated.
                 chrome.storage.local.set(dataObject, function() {
                 
-                    chrome.storage.local.get(function(dataObject) {
-                    
-                        chrome.runtime.sendMessage({message: dataObject});  //This demonstrates returning the tweets to background.js.       
-                    });   
+                    //Return the stored data to background.js.
+                    chrome.runtime.sendMessage({message: {dataObj : dataObject, messageId : '1'}});  
                 });  
             }     
         }
