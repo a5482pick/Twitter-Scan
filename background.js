@@ -25,7 +25,7 @@ function beginBackground() {
             if (request.message.messageId === '1') {
             
                 var dataObject = request.message.dataObj;
-                //alert(dataObject[1]);
+                alert(dataObject[0]);
             }
         });
     

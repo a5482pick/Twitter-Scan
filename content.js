@@ -1,7 +1,8 @@
 var numNewTweets = 0.9;        
 var dataObject = {};
 var myWindow;
-
+var k;
+dataObject[0] = 1;
 
 //Listen for message from background.js
 chrome.runtime.onMessage.addListener(
@@ -45,6 +46,7 @@ chrome.runtime.onMessage.addListener(
                 var tweetElementArray = [];
                 var j = 0;
                 
+                k = dataObject[0];
                 
                 //For every p element on the page...
                 for (i = 0; i < pElementArray.length; i++)  {
@@ -63,10 +65,12 @@ chrome.runtime.onMessage.addListener(
                             tweetElementArray[j].style.color = "green"; 
                             
                             //Store the new tweets in an array.                           
-                            dataObject[j] = tweetElementArray[j].innerText;   
+                            dataObject[k] = tweetElementArray[j].innerText;   
                             
                             //Output the tweets to a new window.
-                            myWindow.document.write("<p>" + dataObject[j] + "</p>");                
+                            myWindow.document.write("<p>" + dataObject[k] + "</p>");
+                            
+                            k++;                
                         }
                     
                         else {
@@ -79,6 +83,8 @@ chrome.runtime.onMessage.addListener(
                         j++;
                     }
                 }
+                
+                dataObject[0] = k;
 
                 //After the 'for loop' has finished, the storage of the tweets is demonstrated.
                 chrome.storage.local.set(dataObject, function() {
