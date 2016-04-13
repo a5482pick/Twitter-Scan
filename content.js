@@ -1,6 +1,7 @@
 var numNewTweets = 0;        
 var dataObject = {};
 var myWindow;
+var newTab = 0;
 
 //Listen for message from background.js
 chrome.runtime.onMessage.addListener(
@@ -9,8 +10,13 @@ chrome.runtime.onMessage.addListener(
 
 
         //Called once, immediately when 'page action' is pressed.
-        if( request.message === "initiate" ) {
-        
+        if( request.message === "initiate" && newTab == 0) {
+            
+
+            //Limit to only one blank page created, per twitter tab id.
+            newTab = 1;
+            
+            //Create the new tab for listing new tweets.
             myWindow = window.open("");
             myWindow.document.write("<title>New Tweets Collection</title>");
             myWindow.document.write("<i>(Keep this tab open to list new tweets in real time.  The first tweet is presented already, for demonstration.)</i>");
