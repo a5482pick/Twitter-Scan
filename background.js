@@ -33,7 +33,7 @@ function beginBackground() {
             chrome.tabs.query({url : "*://twitter.com/*", active : true}, function (tab) {
             
                 chrome.browserAction.disable(tab[0].id);
-                chrome.tabs.sendMessage(tab[0].id, {message: "initiate"});   
+                chrome.tabs.sendMessage(tab[0].id, {message: "initiate", url: tab[0].url});   
             });
     
     
@@ -42,7 +42,7 @@ function beginBackground() {
     
                 if (tab.url.match(/twitter/)) {  
                 
-                    chrome.tabs.sendMessage(tabId, {message: "buttonClicked"});
+                    chrome.tabs.sendMessage(tabId, {message: "buttonClicked", url: tab.url});
                 }
             });
         } 
