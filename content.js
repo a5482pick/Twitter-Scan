@@ -1,52 +1,78 @@
-var numNewTweets = 0.9;        
+var numNewTweets = 0;        
 var dataObject = {};
 var myWindow;
-var k;
-dataObject[0] = 1;
 
 //Listen for message from background.js
 chrome.runtime.onMessage.addListener(
 
     function(request, sender, sendResponse) {
 
-        //Called only when the page action button is pressed.  Initialies a blank tab to store tweets.
+
+        //Called once, immediately when 'page action' is pressed.
         if( request.message === "initiate" ) {
         
             myWindow = window.open("");
             myWindow.document.write("<title>New Tweets Collection</title>");
-            myWindow.document.write("<i>(Any new tweets will be listed here in real time.  The first tweet is presented for demonstration.)</i>");
+            myWindow.document.write("<i>(Keep this tab open to list new tweets in real time.  The first tweet is presented already, for demonstration.)</i>");
+            
+            //Collect all 'p' elements.
+            var pElementArray = document.getElementsByTagName("p");
+            
+            //An array to store all the tweet-containing p elements.
+            var tweetElementArray = [];
+            var j = 0;
+            
+            
+            //For every p element on the page...
+            for (i = 0; i < pElementArray.length; i++)  {
+            
+                //Find p elements with correct class name.  This subset will be labelled with a j.
+                if (pElementArray[i].className.match(/js-tweet-text tweet-text/g)) {
+                    
+                    //The inner text of theses elements are the tweets, so store them.  
+                    tweetElementArray[j] = pElementArray[i];
+                    
+                    //Make all tweets red.
+                    tweetElementArray[j].style.color = "red";
+                    
+                    //Increment to next free position.
+                    j++;
+                }
+            }
+            
+            //For demonstration, make the 1st tweet green, and output it to the new window.
+            tweetElementArray[0].style.color = "green";
+            myWindow.document.write("<p>" + tweetElementArray[0].innerText + "</p>");
         }
     
-        //Called when page action is pressed AND when a relevant tab automatically updates.
+    
+        //Called when page action is pressed AND when new tweets become available.
         if( request.message === "buttonClicked" ) { 
-            
-            if (document.readyState === "complete") { 
-                      
-                //Get the 'new tweets' bar.
-                var elements = document.body.getElementsByClassName("new-tweets-bar");
+           
+            //Get the 'new tweets' bar.
+            var elements = document.body.getElementsByClassName("new-tweets-bar");
                 
-                if (elements) {
+            if (elements) {
                       
-                    for (i = 0; i < elements.length; i++)  {
+                for (i = 0; i < elements.length; i++)  {
                         
-                        //Store number of new tweets.
-                        numNewTweets = parseInt(elements[i].innerText);
+                    //Store number of new tweets.
+                    numNewTweets = parseInt(elements[i].innerText);
                         
-                        //Load the new tweets.
-                        elements[i].click(); 
-                    } 
-                }    
-                     
-                           
-                //Manipulate text and colour of new tweets.
+                    //Load the new tweets.
+                    elements[i].click(); 
+                } 
+            }
+                
+            //Only output when the update creates new tweets.
+            if (numNewTweets) {    
+                                 
                 //Collect all 'p' elements.
                 var pElementArray = document.getElementsByTagName("p");
                 
                 //An array to store all the tweet-containing p elements.
                 var tweetElementArray = [];
                 var j = 0;
-                
-                k = dataObject[0];
                 
                 //For every p element on the page...
                 for (i = 0; i < pElementArray.length; i++)  {
@@ -55,22 +81,17 @@ chrome.runtime.onMessage.addListener(
                     //Find p elements with correct class name.
                     if (pElementArray[i].className.match(/js-tweet-text tweet-text/g)) {
                     
-                        //These elements are the tweets, so store them.  
+                        //Inner text of these elements are the tweets, so store them.  
                         tweetElementArray[j] = pElementArray[i];
                     
                    
                         if (j < numNewTweets) {
-                        
+                      
                             //Make new tweets green.           
                             tweetElementArray[j].style.color = "green"; 
                             
-                            //Store the new tweets in an array.                           
-                            dataObject[k] = tweetElementArray[j].innerText;   
-                            
                             //Output the tweets to a new window.
-                            myWindow.document.write("<p>" + dataObject[k] + "</p>");
-                            
-                            k++;                
+                            myWindow.document.write("<p>" + tweetElementArray[j].innerText + "</p>");              
                         }
                     
                         else {
@@ -81,19 +102,11 @@ chrome.runtime.onMessage.addListener(
                         
                         //Only increment j if the p element's class name matches.
                         j++;
-                    }
-                }
-                
-                dataObject[0] = k;
-
-                //After the 'for loop' has finished, the storage of the tweets is demonstrated.
-                chrome.storage.local.set(dataObject, function() {
-                
-                    //Return the stored data to background.js.
-                    chrome.runtime.sendMessage({message: {dataObj : dataObject, messageId : '1'}});  
-                });  
-            }     
-        }
+                    }//End if.
+                }//End for.
+            }//End if (numNewTweets). 
+            numNewTweets = 0;  
+        }//End if ("buttonClicked").
     }
 );
 
