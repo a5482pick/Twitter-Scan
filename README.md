@@ -2,9 +2,6 @@
 
 To use: be on a twitter tweet tab.  The page action is otherwise unavailable.
 
-<<<<<<< HEAD
-'New' tweets are dynamically listed (in real time) in a specially created tab.  As the tweets are listed in the new tab, they are coloured green in the twitter.com page.  Older tweets are coloured red.  The first tweet is coloured green then listed immediately, as a demonstration.
-=======
 'New' tweets are dynamically listed (in real time) in a specially created tab.  As the tweets are listed in the new tab, they are coloured green in the twitter.com page.  Older tweets are coloured red.  The first tweet is listed immediately as a demonstration.
->>>>>>> d0a8fda2729d5c9833862aa6fe7d0a4256bf4bcc
+
 
