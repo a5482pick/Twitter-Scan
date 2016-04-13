@@ -1,7 +1,7 @@
 var numNewTweets = 0;        
-var dataObject = {};
 var myWindow;
 var newTab = 0;
+var RE;      //For the filter criteria.
 
 //Listen for message from background.js
 chrome.runtime.onMessage.addListener(
@@ -15,6 +15,9 @@ chrome.runtime.onMessage.addListener(
 
             //Limit to only one blank page created, per twitter tab id.
             newTab = 1;
+            
+            //Your entered filter criteria.
+            var searchTerm = window.prompt("Enter your new search term.");
             
             //Create the new tab for listing new tweets.
             myWindow = window.open("");
@@ -46,9 +49,15 @@ chrome.runtime.onMessage.addListener(
                 }
             }
             
-            //For demonstration, make the 1st tweet green, and output it to the new window.
+            //For demonstration, make the 1st tweet green, and output it to the new window if appropriate.
             tweetElementArray[0].style.color = "green";
-            myWindow.document.write("<p>" + tweetElementArray[0].innerText + "</p>");
+            
+            RE = new RegExp(searchTerm, 'gi');
+            
+            if (tweetElementArray[0].innerText.match(RE))  {
+             
+                myWindow.document.write("<p>" + tweetElementArray[0].innerText + "</p>");
+            }
         }
     
     
@@ -96,8 +105,12 @@ chrome.runtime.onMessage.addListener(
                             //Make new tweets green.           
                             tweetElementArray[j].style.color = "green"; 
                             
-                            //Output the tweets to a new window.
-                            myWindow.document.write("<p>" + tweetElementArray[j].innerText + "</p>");              
+                            
+                            //Output the tweets to a new window if not discarded.
+                            if (tweetElementArray[j].innerText.match(RE))  {
+                            
+                                myWindow.document.write("<p>" + tweetElementArray[j].innerText + "</p>");   
+                            }           
                         }
                     
                         else {
