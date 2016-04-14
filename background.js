@@ -11,20 +11,24 @@ function beginBackground() {
    
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     
-        if (!changeInfo.url.match(/twitter/)) {
+        //If an updated tab is reloaded, disable the browser action using a repeated function.
+        setInterval(function() {
+    
+            if (!changeInfo.url.match(/twitter/)) {
         
-            chrome.browserAction.disable(tabId);
-        }
+                chrome.browserAction.disable(tabId);
+            }
+        }, 1000);
     });
     
     
-    //The following commences whenever the PageAction is pressed.
+    //The following commences whenever the browser action is pressed.
     chrome.browserAction.onClicked.addListener(function(tab) {
   
-        //If trying to activate on a non-twitter page.     
+        //If trying to activate on a non-twitter page.    
         if (!tab.url.match(/twitter/)) {
         
-            alert("Need a twitter.com url.");
+            alert("Need a twitter.com url."); //(Not really required.)
         }
         
         else {
