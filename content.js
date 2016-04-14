@@ -1,6 +1,5 @@
 var numNewTweets = 0;        
 var myWindow;
-var newTab = 0;
 var RE;      //For the filter criteria.
 var urlKey;
 var storeObject = {};
@@ -14,7 +13,7 @@ chrome.runtime.onMessage.addListener(
 
 
         //Called once, immediately when 'browser action' is pressed.
-        if( request.message === "initiate" && newTab == 0) {
+        if( request.message === "initiate") {
         
             //The url of the calling tab.  Needed for storage key.
             urlKey = request.url;
@@ -60,9 +59,6 @@ chrome.runtime.onMessage.addListener(
                     }
                 }
      
-  
-                //Limit to only one blank page created, per twitter tab id.
-                newTab = 1;
             
                 //Prompt user for selection criteria.
                 var searchTerm = window.prompt("Enter your new search term.");

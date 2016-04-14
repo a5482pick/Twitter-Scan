@@ -1,29 +1,20 @@
 function beginBackground() {
 
-    //Limit the pages that the browser action may be used on.
-    chrome.tabs.onCreated.addListener(function(tab) {
-    
-        if (!tab.url.match(/twitter/))  {
+    //When tab updates, make the page action visible if it's a twitter.com page.
+    function checkUrl(tabId, changeInfo, tab) {
 
-            chrome.browserAction.disable(tab.id);
+        if (tab.url.match(/twitter/))  {
+
+            chrome.pageAction.show(tabId);
         }
-    });
-   
-    chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    
-        //If an updated tab is reloaded, disable the browser action using a repeated function.
-        setInterval(function() {
-    
-            if (!changeInfo.url.match(/twitter/)) {
-        
-                chrome.browserAction.disable(tabId);
-            }
-        }, 1000);
-    });
+    };
+
+    //Listen for changes to tabs.
+    chrome.tabs.onUpdated.addListener(checkUrl);
     
     
-    //The following commences whenever the browser action is pressed.
-    chrome.browserAction.onClicked.addListener(function(tab) {
+    //The following commences whenever the enabled page action is pressed.
+    chrome.pageAction.onClicked.addListener(function(tab) {
   
         //If trying to activate on a non-twitter page.    
         if (!tab.url.match(/twitter/)) {
@@ -36,7 +27,6 @@ function beginBackground() {
             //Tell content.js to open a new tab to list all the relevant tweets in real time.
             chrome.tabs.query({url : "*://twitter.com/*", active : true}, function (tab) {
             
-                chrome.browserAction.disable(tab[0].id);
                 chrome.tabs.sendMessage(tab[0].id, {message: "initiate", url: tab[0].url});   
             });
     

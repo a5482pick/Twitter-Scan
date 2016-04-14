@@ -16,7 +16,7 @@
   "permissions": [
       "tabs", "storage"
   ],
-  "browser_action": {
+  "page_action": {
     "default_icon": "loop.png"
   }
 }
