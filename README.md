@@ -4,7 +4,7 @@ New tweets are filtered according to your criteria, then listed (in real time) i
 
 There is also a memory feature: the output tweets from a previous run are shown in another new tab.  If memory is stored, a prompt box offers you the chance to clear memory at the start of the new run.
 
-To use: be on a twitter tweet tab.  The browser-action is otherwise unavailable.  In the prompt box, type what string you require to be in your selected tweets.  Only these tweets will appear in the output tab.
+To use: be on a twitter tweet tab.  In the prompt box, type what string you require to be in your selected tweets.  Only these tweets will appear in the output tab.
 
 
 
