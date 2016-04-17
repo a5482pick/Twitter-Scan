@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(
             //Define a 2d object. 
             var storeObject = {}; 
             storeObject[urlKey] = {};
-            storeObject[0 + " "] = {};      //To hold current position in the storage 'array'.
+            storeObject[0] = {};      //To hold current position in the storage 'array'.
             
             //Get any stored tweets from a previous run.
             chrome.storage.local.get(function(stored) {
@@ -52,26 +52,26 @@ chrome.runtime.onMessage.addListener(
                 clear = 0;
                 
                 //A current position > 1 means there is storage, so offer to clear.
-                if (storeObject && (storeObject[0 + " "][0 + " "] > 1)) {
+                if (storeObject && (storeObject[0][0] > 1)) {
                 
                     if (confirm("Memory from a previous session has been listed.  Click OK to clear memory, cancel to not clear."))  {
 
                         chrome.storage.local.clear(function(){});
                         
-                        storeObject[0 + " "][0 + " "] = 1;
+                        storeObject[0][0] = 1;
                         clear = 1;
                     }
                 }
                 
                 
                 //This initialises an undefined initial position.
-                if (!storeObject[0 + " "][0 + " "]) {
+                if (!storeObject[0][0]) {
                 
-                    storeObject[0 + " "][0 + " "] = 1;
+                    storeObject[0][0] = 1;
                 }
                 
                 //Assign position to a defined script variable.
-                num = storeObject[0 + " "][0 + " "];
+                num = storeObject[0][0];
                 
                 //Store the (possibly changed) data.
                 if (clear != 1)   {
@@ -206,7 +206,7 @@ chrome.runtime.onMessage.addListener(
                                     bracket = j + num;
                                     
                                     myWindow.document.write("<p>" + tweetElementArray[j].innerText + "</p>"); 
-                                    storeObject[urlKey][bracket + " "] = tweetElementArray[j].innerText;  
+                                    storeObject[urlKey][bracket] = tweetElementArray[j].innerText;  
                                 
                                     //Only increment j if the p element's class name matches.
                                     j++; 
@@ -223,7 +223,7 @@ chrome.runtime.onMessage.addListener(
                     }//End for.
                 
                     //Tell memory where the first unused location is, and store all the tweets.
-                    storeObject[0 + " "][0 + " "] = bracket + 1;
+                    storeObject[0][0] = bracket + 1;
                     chrome.storage.local.set(storeObject);
                 
                 }//End if (numNewTweets). 
