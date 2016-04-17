@@ -33,7 +33,7 @@ chrome.runtime.onMessage.addListener(
                 //Open a new window to display any stored tweets from a previous run.
                 oldDataWin = window.open("");
                 oldDataWin.document.write("<title>Previously stored tweets.</title>");
-                oldDataWin.document.write("<i>(Any tweets from a previous TwitterScan session will be listed here, with their tweet's url. &nbsp;The first line is the number of tweets.)</i>");
+                oldDataWin.document.write("<i>(Any storage indices and their tweets from a previous TwitterScan session will be listed here. &nbsp;When listed, the first unfilled storage location is the value at 0 0.)</i>");
 
 
                 //Loop over all tweets in the stored object, to output them to oldDataWin tab, and assign them to the 2d object.
@@ -222,7 +222,7 @@ chrome.runtime.onMessage.addListener(
                     }//End for.
                 
                     //Tell memory where the first unused location is, and store all the tweets.
-                    storeObject[0 + " "][0 + " "] = bracket;
+                    storeObject[0 + " "][0 + " "] = bracket + 1;
                     chrome.storage.local.set(storeObject);
                 
                 }//End if (numNewTweets). 
