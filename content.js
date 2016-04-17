@@ -18,10 +18,11 @@ chrome.runtime.onMessage.addListener(
         //Called once, immediately when 'browser action' is pressed.
         if( request.message === "initiate") {
         
+        
             //The url of the calling tab.  Needed for storage key.
             urlKey = request.url;           
-            //Define a 2d object.
             
+            //Define a 2d object. 
             var storeObject = {}; 
             storeObject[urlKey] = {};
             storeObject[0 + " "] = {};      //To hold current position in the storage 'array'.
